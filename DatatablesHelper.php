@@ -112,7 +112,7 @@
 				
 				for ($i = 0; $i<count($columns); $i++)
 				{
-					$sHaving .= $columns[$i]["alias"] . " LIKE '%" . mysql_real_escape_string( $_POST['sSearch'] ) . "%' OR ";
+					$sHaving .= $columns[$i]["alias"] . " LIKE '%" . $this->ci->db->escape_like_str( $_POST['sSearch'] ) . "%' OR ";
 				}
 				
 				$sHaving = substr_replace($sHaving, "", -3);
@@ -134,7 +134,7 @@
 						$sHaving .= " AND ";
 					}
 					
-					$sHaving .= $columns[$i]["alias"] . " LIKE '%" . mysql_real_escape_string($_POST['sSearch_' . $i]) . "%' ";
+					$sHaving .= $columns[$i]["alias"] . " LIKE '%" . $this->ci->db->escape_like_str($_POST['sSearch_' . $i]) . "%' ";
 				}
 			}
 			
@@ -156,7 +156,7 @@
 				{
 					if ($_POST['bSortable_' . intval($_POST['iSortCol_' . $i])] == "true")
 					{
-						$sOrder .= $columns[intval($_POST['iSortCol_' . $i])]["alias"] . " " . mysql_real_escape_string($_POST['sSortDir_' . $i]) . ", ";
+						$sOrder .= $columns[intval($_POST['iSortCol_' . $i])]["alias"] . " " . $this->ci->db->escape_like_str($_POST['sSortDir_' . $i]) . ", ";
 					}
 				}
 				
@@ -180,7 +180,7 @@
 			
 			if (isset($_POST["iDisplayStart"]) && $_POST["iDisplayLength"] != '-1')
 			{
-				$sLimit = "LIMIT " . mysql_real_escape_string($_POST["iDisplayStart"]) . ", " . mysql_real_escape_string($_POST["iDisplayLength"]);
+				$sLimit = "LIMIT " . $this->ci->db->escape_like_str($_POST["iDisplayStart"]) . ", " . $this->ci->db->escape_like_str($_POST["iDisplayLength"]);
 			}
 			
 			return $sLimit;
