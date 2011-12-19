@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+	
 	/**
 	 * Open Source Initiative OSI - The BSD 3-Clause License
 	 *
@@ -51,7 +51,14 @@
 			
 			$iTotalDisplayRecords = $query->result();
 			
-			return array("Result" => $result, "iTotalRecords" => $iTotalRecords[0]->TOTAL, "iTotalDisplayRecords" => $iTotalDisplayRecords[0]->TOTAL);
+			$sEcho = 0;
+			
+			if(isset($_POST["sEcho"]))
+			{
+				$sEcho = $_POST["sEcho"];
+			}
+			
+			return array("sEcho" => $sEcho, "iTotalRecords" => $iTotalRecords[0]->TOTAL, "iTotalDisplayRecords" => $iTotalDisplayRecords[0]->TOTAL, "Result" => $result, "sColumns" => $this->getSColumns($result));
 		}
 		
 		/**
@@ -184,6 +191,20 @@
 			}
 			
 			return $sLimit;
+		}
+		
+		public function getSColumns($result)
+		{
+			$columns = array_keys((array) $result[0]);
+			
+			$temp = "";
+			
+			foreach($columns as $column)
+			{
+				$temp .= $column . ", ";
+			}
+			
+			return  substr($temp, 0, -2);
 		}
 	}
 
